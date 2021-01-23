@@ -10,5 +10,23 @@
   <%= @event.max_capacity %>
 </p>
 
+<p>
+  <strong>Sessions:</strong>
+  <%= content_tag :ul do %>
+    <% @event.sessions.pluck(:name).map do |session_name| %>
+      <%= content_tag :li, session_name %>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
+  <strong>People:</strong>
+  <%= content_tag :ul do %>
+    <% @event.people.pluck(:name).map do |person_name| %>
+      <%= content_tag :li, person_name %>
+    <% end %>
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>
