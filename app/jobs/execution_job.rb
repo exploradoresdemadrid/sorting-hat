@@ -17,7 +17,7 @@ class ExecutionJob < ApplicationJob
       execution.update(progress: progress, target_function: target_function)
     end
     vns.run
-    execution.succeeded
+    execution.succeeded!
     Rails.logger.info "Target funcion: #{vns.target_function}"
   rescue StandardError => e
     Execution.find(execution_id).error!
