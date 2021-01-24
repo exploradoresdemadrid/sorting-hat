@@ -1,0 +1,82 @@
+version: 2
+jobs:
+  test:
+    working_directory: ~/sorting-hat
+    parallelism: 1
+    shell: /bin/bash --login
+    docker:
+      - image: circleci/ruby:2.7.1-node-browsers
+        environment:
+          RAILS_ENV: test
+          RACK_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+      - image: circleci/postgres:9.6-ram
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: sorting-hat_test
+          POSTGRES_PASSWORD: postgres
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dep-{{ checksum "Gemfile.lock" }}
+            - v1-dep-bundle-
+      - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - save_cache:
+          key: v1-dep-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          command: bundle exec rspec --color --format documentation --require spec_helper --require rails_helper spec
+          environment:
+            RAILS_GROUPS: assets
+      - store_artifacts:
+          path: coverage
+          prefix: tests
+  build:
+    docker:
+      - image: circleci/ruby:2.7.1-node-browsers
+    steps:
+      - checkout
+      - run:
+          name: Setup VirtualEnv
+          command: |
+            echo 'export TAG=${CIRCLE_BRANCH}' >> $BASH_ENV
+            echo 'export IMAGE_NAME=sorting-hat' >> $BASH_ENV 
+            echo 'export ORG_NAME=exploradoresdemadrid' >> $BASH_ENV 
+      - setup_remote_docker:
+          docker_layer_caching: true
+          version: 19.03.13
+      - run:
+          name: Build & push to DockerHub 
+          command: |
+            docker build -t $ORG_NAME/$IMAGE_NAME:$TAG .
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push $ORG_NAME/$IMAGE_NAME:$TAG
+#  deploy:
+#    docker:
+#      - image: ictu/sshpass
+#    steps:
+#      - run:
+#          name: Deploy to server 
+#          command: |
+#            sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_ADDRESS "cd /home/ubuntu/deployments/scripts && ./deploy-prod.sh"
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+#      - deploy:
+#          requires:
+#            - build
+#            - test
+#          filters:
+#            branches:
+#              only:
+#                - master
