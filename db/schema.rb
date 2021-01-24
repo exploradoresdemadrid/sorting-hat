@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_23_211811) do
+ActiveRecord::Schema.define(version: 2021_01_23_230933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,12 +23,33 @@ ActiveRecord::Schema.define(version: 2021_01_23_211811) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "executions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "event_id", null: false
+    t.integer "iterations"
+    t.float "target_function"
+    t.float "progress", default: 0.0, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_executions_on_event_id"
+  end
+
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "event_id", null: false
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_people_on_event_id"
+  end
+
+  create_table "preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "person_id", null: false
+    t.uuid "session_id", null: false
+    t.integer "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["person_id"], name: "index_preferences_on_person_id"
+    t.index ["session_id"], name: "index_preferences_on_session_id"
   end
 
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -39,6 +60,9 @@ ActiveRecord::Schema.define(version: 2021_01_23_211811) do
     t.index ["event_id"], name: "index_sessions_on_event_id"
   end
 
+  add_foreign_key "executions", "events"
   add_foreign_key "people", "events"
+  add_foreign_key "preferences", "people"
+  add_foreign_key "preferences", "sessions"
   add_foreign_key "sessions", "events"
 end

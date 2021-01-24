@@ -11,6 +11,15 @@
 </p>
 
 <p>
+  <strong>Executions:</strong>
+  <%= content_tag :ul do %>
+    <% @event.executions.order(status: :asc, target_function: :asc).map do |execution| %>
+      <%= content_tag :li, "#{execution.id} | #{execution.status} | target: #{execution.target_function.to_f} | progress: #{(100 * execution.progress.to_f).round}%" %>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
   <strong>Sessions:</strong>
   <%= content_tag :ul do %>
     <% @event.sessions.pluck(:name).map do |session_name| %>
