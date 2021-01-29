@@ -1,4 +1,4 @@
-<%= form_with(model: event) do |form| %>
+<%= form_with(model: event, multipart: true) do |form| %>
   <% if event.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
@@ -19,6 +19,11 @@
   <div class="field">
     <%= form.label :max_capacity %>
     <%= form.number_field :max_capacity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :file %>
+    <%= form.file_field :import %>
   </div>
 
   <div class="actions">
