@@ -18,11 +18,16 @@ class Event < ApplicationRecord
 
     ActiveRecord::Base.transaction do
       clear_data
-      session_names = csv.headers.compact
-      session_names.each { |name| sessions.create(name: name) }
 
-      people_names = csv.map { |row| row[0] }
-      people_names.each { |name| people.create(name: name) }
+      new_sessions = csv.headers.compact.map { |name| sessions.create(name: name) }
+
+      csv.each do |row|
+        person = people.create(name: row[0])
+
+        row.to_h.select { |k, _v| k }.each do |session_name, value|
+          person.preferences.create(session: new_sessions.find { |s| s.name == session_name }, value: value)
+        end
+      end
     end
   end
 
