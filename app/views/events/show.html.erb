@@ -29,7 +29,7 @@
     <% end %>
   </th>
 
-  <% @event.people.each do |person| %>
+  <% @event.people.includes(:preferences).each do |person| %>
     <tr>
       <%= content_tag :td, person.name %>
       <% person.preferences.each do |preference| %>
