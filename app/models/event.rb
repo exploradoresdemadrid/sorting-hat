@@ -7,7 +7,7 @@ class Event < ApplicationRecord
   has_many :executions
   attr_accessor :import
 
-  before_save :import_data
+  after_create :import_data
 
   private
 
