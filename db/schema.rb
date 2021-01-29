@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_23_230933) do
+ActiveRecord::Schema.define(version: 2021_01_29_101509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "execution_id", null: false
+    t.uuid "preference_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["execution_id"], name: "index_assignments_on_execution_id"
+    t.index ["preference_id"], name: "index_assignments_on_preference_id"
+  end
 
   create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -60,6 +69,8 @@ ActiveRecord::Schema.define(version: 2021_01_23_230933) do
     t.index ["event_id"], name: "index_sessions_on_event_id"
   end
 
+  add_foreign_key "assignments", "executions"
+  add_foreign_key "assignments", "preferences"
   add_foreign_key "executions", "events"
   add_foreign_key "people", "events"
   add_foreign_key "preferences", "people"
