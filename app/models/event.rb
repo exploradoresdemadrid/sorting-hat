@@ -20,10 +20,14 @@ class Event < ApplicationRecord
       clear_data
       session_names = csv.headers.compact
       session_names.each { |name| sessions.create(name: name) }
+
+      people_names = csv.map { |row| row[0] }
+      people_names.each { |name| people.create(name: name) }
     end
   end
 
   def clear_data
     sessions.delete_all
+    people.delete_all
   end
 end
