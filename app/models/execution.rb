@@ -1,5 +1,6 @@
 class Execution < ApplicationRecord
   belongs_to :event
+  has_many :assignments, dependent: :destroy
   after_create :spawn_job
   enum status: {
     unstarted: 0,
