@@ -13,8 +13,8 @@
 <p>
   <strong>Executions:</strong>
   <%= content_tag :ul do %>
-    <% @event.executions.order(status: :asc, target_function: :asc).map do |execution| %>
-      <%= content_tag :li, "#{execution.id} | #{execution.status} | target: #{execution.target_function.to_f} | progress: #{(100 * execution.progress.to_f).round}%" %>
+    <% @event.executions.order(status: :asc, target_function: :asc).each_with_index.map do |execution, i| %>
+      <%= content_tag :li, link_to("Execution #{i + 1}", event_execution_path(@event, execution)) + " | #{execution.status} | target: #{execution.target_function.to_f} | progress: #{execution.formatted_progress}" %>
     <% end %>
   <% end %>
 </p>

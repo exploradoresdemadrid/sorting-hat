@@ -11,6 +11,10 @@ class Execution < ApplicationRecord
     stopped: 5
   }
 
+  def formatted_progress
+    "#{(100 * progress.to_f).round}%"
+  end
+
   private
 
   def spawn_job

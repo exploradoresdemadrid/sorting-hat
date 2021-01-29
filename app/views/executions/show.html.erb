@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @execution.status %>
+</p>
+
+<p>
+  <strong>Progress:</strong>
+  <%= @execution.formatted_progress %>
+</p>
+
+<p>
+  <strong>Solution:</strong>
+
+  <ul>
+    <% @event.sessions.each do |session| %>
+      <%= content_tag :li, session.name %>
+      <li>
+        <ul>
+        <% people_in_session(@execution, session).each do |name| %>
+          <%= content_tag :li, name %>
+        <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+</p>
+
+<%= link_to 'Back', event_path(@event) %>
