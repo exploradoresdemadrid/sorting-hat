@@ -1,7 +1,14 @@
 class ExecutionsController < ApplicationController
-  before_action :set_execution, only: %w[ show edit update destroy ]
+  before_action :set_execution, only: %w[ show create ]
 
   def show
+  end
+
+  def create
+    params.require(:execution).permit(:amount)[:amount].to_i.times do
+      @event.executions.create
+    end
+    redirect_to event_url(@event)
   end
 
   private

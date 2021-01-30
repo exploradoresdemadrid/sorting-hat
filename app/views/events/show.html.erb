@@ -12,6 +12,12 @@
 
 <p>
   <strong>Executions:</strong>
+
+  <%= form_for :execution, url: event_executions_path(@event), method: :post do |f| %>
+    <%= f.number_field :amount, value: 5 %>
+    <%= f.submit 'Create executions' %>
+  <% end %>
+
   <%= content_tag :ul do %>
     <% @event.executions.order(status: :asc, target_function: :asc).each_with_index.map do |execution, i| %>
       <%= content_tag :li, link_to("Execution #{i + 1}", event_execution_path(@event, execution)) + " | #{execution.status} | target: #{execution.target_function.to_f} | progress: #{execution.formatted_progress}" %>
