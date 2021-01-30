@@ -14,7 +14,7 @@
   <strong>Executions:</strong>
 
   <%= form_for :execution, url: event_executions_path(@event), method: :post do |f| %>
-    <%= f.number_field :amount, value: 5 %>
+    <%= f.number_field :amount, value: 1 %>
     <%= f.submit 'Create executions' %>
   <% end %>
 
