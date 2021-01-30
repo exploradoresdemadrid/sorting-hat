@@ -18,18 +18,7 @@
 <p>
   <strong>Solution:</strong>
 
-  <ul>
-    <% @event.sessions.each do |session| %>
-      <%= content_tag :li, session.name %>
-      <li>
-        <ul>
-        <% people_in_session(@execution, session).each do |name| %>
-          <%= content_tag :li, name %>
-        <% end %>
-        </ul>
-      </li>
-    <% end %>
-  </ul>
+  <%= people_in_session(@assignments) %>
 </p>
 
 <%= link_to 'Back', event_path(@event) %>

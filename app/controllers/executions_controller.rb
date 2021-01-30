@@ -1,7 +1,8 @@
 class ExecutionsController < ApplicationController
-  before_action :set_execution, only: %w[ show create ]
+  before_action :set_execution, only: %w[show create]
 
   def show
+    @assignments = @execution.assignments.includes(preference: %i[person session])
   end
 
   def create
