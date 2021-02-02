@@ -12,7 +12,16 @@ module ExecutionsHelper
     body = (0...number_of_rows).map do |row|
       content_tag(:tr) do
         content_tag(:td) + (0...number_of_columns).map do |column|
-          content_tag(:td, distribution_array[column]&.last[row]&.preference&.person&.name)
+          preference = distribution_array[column]&.last&.dig(row)&.preference
+          person_name = preference&.person&.name
+          unhappiness = preference&.value.to_i - 1
+
+          if unhappiness.positive?
+            unhappiness_marker = " (-#{unhappiness})" if unhappiness.positive?
+            content_tag(:td, content_tag(:strong, "#{person_name}#{unhappiness_marker}"))
+          else
+            content_tag(:td, person_name)
+          end
         end.inject(:+)
       end
     end.inject(:+)
