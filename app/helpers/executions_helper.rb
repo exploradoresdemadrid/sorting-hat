@@ -14,7 +14,7 @@ module ExecutionsHelper
         content_tag(:td) + (0...number_of_columns).map do |column|
           preference = distribution_array[column]&.last&.dig(row)&.preference
           person_name = preference&.person&.name
-          unhappiness = preference&.value.to_i - 1
+          unhappiness = preference&.value.to_i - 3
 
           if unhappiness.positive?
             unhappiness_marker = " (-#{unhappiness})" if unhappiness.positive?
