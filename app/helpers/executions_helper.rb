@@ -12,7 +12,7 @@ module ExecutionsHelper
     body = (0...number_of_rows).map do |row|
       content_tag(:tr) do
         content_tag(:td) + (0...number_of_columns).map do |column|
-          content_tag(:td, distribution_array[column]&.last[row]&.preference&.person&.name)
+          content_tag(:td, distribution_array[column]&.last&.dig(row)&.preference&.person&.name)
         end.inject(:+)
       end
     end.inject(:+)
