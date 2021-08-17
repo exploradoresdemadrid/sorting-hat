@@ -5,7 +5,7 @@ jobs:
     parallelism: 1
     shell: /bin/bash --login
     docker:
-      - image: circleci/ruby:2.7.2-node-browsers
+      - image: circleci/ruby:2.7.3-node-browsers
         environment:
           RAILS_ENV: test
           RACK_ENV: test
@@ -36,7 +36,7 @@ jobs:
           prefix: tests
   build:
     docker:
-      - image: circleci/ruby:2.7.2-node-browsers
+      - image: circleci/ruby:2.7.3-node-browsers
     steps:
       - checkout
       - run:
