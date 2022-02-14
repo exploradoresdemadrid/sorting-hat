@@ -13,7 +13,7 @@ class ExecutionService
 
   def run
     vns = VNS::VNS.new(people.pluck(:id), sessions.pluck(:id), preferences, event.max_capacity) do |progress, target_function, solution|
-      execution.update(progress: progress, target_function: target_function - (3 * people.count))
+      execution.update(progress: progress, target_function: target_function - people.count)
       presist_solution(solution)
     end
     vns.run
