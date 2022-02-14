@@ -22,7 +22,12 @@ class Event < ApplicationRecord
       new_sessions = csv.headers.compact.map { |name| sessions.create(name: name) }
 
       csv.each do |row|
-        person = people.create(name: row[0])
+        capture = row[0].match(/(?<name>.+)\s+\((?<group>.+)\)/)
+        person = if capture
+          people.create(name: capture[:name], group: capture[:group])
+        else
+          people.create(name: row[0])
+        end
 
         row.to_h.select { |k, _v| k }.each do |session_name, value|
           person.preferences.create(session: new_sessions.find { |s| s.name == session_name }, value: value)

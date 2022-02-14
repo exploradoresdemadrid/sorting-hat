@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_29_101509) do
+ActiveRecord::Schema.define(version: 2022_02_14_223923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2021_01_29_101509) do
     t.integer "max_capacity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "group_duplication_factor", default: 0.0
   end
 
   create_table "executions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define(version: 2021_01_29_101509) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "group"
     t.index ["event_id"], name: "index_people_on_event_id"
   end
 
