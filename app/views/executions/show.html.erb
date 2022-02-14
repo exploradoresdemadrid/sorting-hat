@@ -21,4 +21,10 @@
   <%= people_in_session(@assignments) %>
 </p>
 
+<p>
+  <strong>Distribution by group:</strong>
+
+  <%= distribution_by_group(@assignments) %>
+</p>
+
 <%= link_to 'Back', event_path(@event) %>

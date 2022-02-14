@@ -11,6 +11,11 @@
 </p>
 
 <p>
+  <strong>Group duplication factor:</strong>
+  <%= @event.group_duplication_factor %>
+</p>
+
+<p>
   <strong>Executions:</strong>
 
   <%= form_for :execution, url: event_executions_path(@event), method: :post do |f| %>
