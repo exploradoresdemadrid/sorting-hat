@@ -23,7 +23,11 @@ class Event < ApplicationRecord
 
       csv.each do |row|
         capture = row[0].match(/(?<name>.+)\s+\((?<group>.+)\)/)
-        person = people.create(name: capture[:name], group: capture[:group])
+        person = if capture
+          people.create(name: capture[:name], group: capture[:group])
+        else
+          people.create(name: row[0])
+        end
 
         row.to_h.select { |k, _v| k }.each do |session_name, value|
           person.preferences.create(session: new_sessions.find { |s| s.name == session_name }, value: value)
