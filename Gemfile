@@ -28,7 +28,7 @@ gem 'jbuilder', '~> 2.11'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
-gem 'vns', '~> 1.0-rc.1'
+gem 'vns', '~> 1.0-rc.2'
 gem 'sidekiq'
 
 group :development, :test do
