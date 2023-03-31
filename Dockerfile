@@ -1,4 +1,4 @@
-FROM ruby:2.7.2-alpine
+FROM ruby:2.7.8-alpine
 
 # Required apps for common rails application
 ENV PACKAGES="\
