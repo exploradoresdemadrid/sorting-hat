@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.11'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'vns', '~> 1.0-rc.2'
-gem 'sidekiq'
+gem 'sidekiq', '>= 7.0.8'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
